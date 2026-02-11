@@ -1,86 +1,179 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><link rel="manifest" href="manifest.json">
+<head>
   <meta charset="UTF-8">
   <title>Estudos – Agente de Zoonoses</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 15px;
       color: #111;
-      padding: 20px;
     }
+
     h1 {
       font-size: 22px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
-    h2 {
-      font-size: 18px;
-      margin-top: 25px;
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
     }
-    ul {
-      padding-left: 15px;
+
+    .tabs button {
+      padding: 8px 12px;
+      border: none;
+      background: #ddd;
+      cursor: pointer;
     }
-    li {
-      margin: 10px 0;
+
+    .tabs button.active {
+      background: #4caf50;
+      color: #fff;
     }
-    a {
-      text-decoration: none;
-      color: #006400;
+
+    .section {
+      display: none;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .section.active {
+      display: block;
+    }
+
+    .item {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+    }
+
+    .item button {
+      margin-top: 5px;
+      padding: 5px 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 5px;
     }
   </style>
-</head><script>
+</head>
+
+<body>
+
+<h1>Plano de Estudos – Agente de Combate às Endemias</h1>
+
+<div class="tabs">
+  <button onclick="openTab('portugues')">Português</button>
+  <button onclick="openTab('matematica')">Matemática</button>
+  <button onclick="openTab('informatica')">Informática</button>
+  <button onclick="openTab('sus')">SUS</button>
+  <button onclick="openTab('zoonoses')">Zoonoses</button>
+</div>
+
+<div id="portugues" class="section">
+  <div class="item">
+    <strong>Interpretação de Texto</strong>
+    <button onclick="video('interpretação de texto concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="pt1"> Estudado</label>
+  </div>
+  <div class="item">
+    <strong>Pontuação</strong>
+    <button onclick="video('pontuação português concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="pt2"> Estudado</label>
+  </div>
+</div>
+
+<div id="matematica" class="section">
+  <div class="item">
+    <strong>Operações Básicas</strong>
+    <button onclick="video('operações básicas matemática concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="mt1"> Estudado</label>
+  </div>
+  <div class="item">
+    <strong>Porcentagem</strong>
+    <button onclick="video('porcentagem matemática concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="mt2"> Estudado</label>
+  </div>
+</div>
+
+<div id="informatica" class="section">
+  <div class="item">
+    <strong>Noções Básicas</strong>
+    <button onclick="video('noções básicas informática concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="inf1"> Estudado</label>
+  </div>
+  <div class="item">
+    <strong>Internet e Navegadores</strong>
+    <button onclick="video('internet e navegadores informática concursos')">Assistir</button>
+    <label><input type="checkbox" data-key="inf2"> Estudado</label>
+  </div>
+</div>
+
+<div id="sus" class="section">
+  <div class="item">
+    <strong>Princípios do SUS</strong>
+    <button onclick="video('princípios do sus explicação')">Assistir</button>
+    <label><input type="checkbox" data-key="sus1"> Estudado</label>
+  </div>
+  <div class="item">
+    <strong>Lei 8.080/90</strong>
+    <button onclick="video('lei 8080 sus explicada')">Assistir</button>
+    <label><input type="checkbox" data-key="sus2"> Estudado</label>
+  </div>
+</div>
+
+<div id="zoonoses" class="section">
+  <div class="item">
+    <strong>O que são Zoonoses</strong>
+    <button onclick="video('introdução às zoonoses agente de endemias')">Assistir</button>
+    <label><input type="checkbox" data-key="zoo1"> Estudado</label>
+  </div>
+  <div class="item">
+    <strong>Dengue, Zika e Chikungunya</strong>
+    <button onclick="video('dengue zika chikungunya agente de endemias')">Assistir</button>
+    <label><input type="checkbox" data-key="zoo2"> Estudado</label>
+  </div>
+</div>
+
+<script>
+function openTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function video(search) {
+  const url = "https://www.youtube.com/results?search_query=" + encodeURIComponent(search);
+  window.open(url, "_blank");
+}
+
+// salvar progresso
+document.querySelectorAll('input[type=checkbox]').forEach(box => {
+  box.checked = localStorage.getItem(box.dataset.key) === 'true';
+  box.addEventListener('change', () => {
+    localStorage.setItem(box.dataset.key, box.checked);
+  });
+});
+
+// abrir primeira aba
+document.querySelector('.tabs button').click();
+
+// registrar service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 </script>
-<body<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script>
-
-<h1>📘 Estudos – Agente de Combate às Endemias</h1>
-
-<h2>Português</h2>
-<ul>
-  <li><a href="https://www.youtube.com/results?search_query=interpretação+de+texto+para+concursos" target="_blank">Interpretação de Texto</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=ortografia+oficial+português+concursos" target="_blank">Ortografia Oficial</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=pontuação+português+para+concursos" target="_blank">Pontuação</a></li>
-</ul>
-
-<h2>Matemática</h2>
-<ul>
-  <li><a href="https://www.youtube.com/results?search_query=operações+básicas+matemática+concursos" target="_blank">Operações Básicas</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=porcentagem+matemática+para+concursos" target="_blank">Porcentagem</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=regra+de+três+simples+concursos" target="_blank">Regra de Três</a></li>
-</ul>
-
-<h2>Informática</h2>
-<ul>
-  <li><a href="https://www.youtube.com/results?search_query=noções+básicas+de+informática+concursos" target="_blank">Noções Básicas</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=internet+e+navegadores+informática+concursos" target="_blank">Internet e Navegadores</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=segurança+da+informação+concursos" target="_blank">Segurança da Informação</a></li>
-</ul>
-
-<h2>SUS e Saúde Pública</h2>
-<ul>
-  <li><a href="https://www.youtube.com/results?search_query=princípios+do+sus+concursos" target="_blank">Princípios do SUS</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=lei+8080+sus+explicada" target="_blank">Lei 8.080/90</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=atenção+básica+em+saúde+sus" target="_blank">Atenção Básica</a></li>
-</ul>
-
-<h2>Conhecimentos Específicos – Zoonoses</h2>
-<ul>
-  <li><a href="https://www.youtube.com/results?search_query=zoonoses+introdução+agente+de+endemias" target="_blank">O que são Zoonoses</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=dengue+zika+chikungunya+agente+de+endemias" target="_blank">Dengue, Zika e Chikungunya</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=controle+de+vetores+zoonoses" target="_blank">Controle de Vetores</a></li>
-  <li><a href="https://www.youtube.com/results?search_query=atribuições+agente+de+combate+às+endemias" target="_blank">Atuação do Agente</a></li>
-</ul>
 
 </body>
 </html>
